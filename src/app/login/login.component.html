@@ -1,3 +1,9 @@
-<p>
-  login works!
-</p>
+<input [(ngModel)]="login" name="login">
+<input [(ngModel)]="password" name="password">
+<button type="submit" (click)="onLogIn()">
+  Sign in
+</button>
+
+<button (click)="onLogOut()">
+  Log out
+</button>

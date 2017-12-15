@@ -6,14 +6,22 @@ import {NavigationComponent} from './navigation/navigation.component';
 import {LoginComponent} from './login/login.component';
 import {RouterModule} from '@angular/router';
 import {ROUTES} from './app.routes';
-import {GoogleMapComponent} from './map/google-map/google-map.component';
 import {MapModule} from './map/map.module';
+import {HttpClientModule} from '@angular/common/http';
+import {SharedModule} from './shared/shared.module';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {UserModule} from './user/user.module';
 
 @NgModule({
   imports: [
     RouterModule.forRoot(ROUTES),
     BrowserModule,
-    MapModule
+    MapModule,
+    HttpClientModule,
+    SharedModule,
+    ReactiveFormsModule,
+    FormsModule,
+    UserModule
   ],
   declarations: [
     AppComponent,
