@@ -1,4 +1,8 @@
-// api constants
+export enum AuthenticationEvents {
+  LOGIN = 'login',
+  LOGOUT = 'logout'
+}
+
 export enum ObserveType {
   RESPONSE = 'response',
   BODY = 'body',
