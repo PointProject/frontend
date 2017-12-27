@@ -1,0 +1,11 @@
+app-google-map {
+  width: 100%;
+}
+
+app-right-panel {
+  flex-basis: 500px;
+}
+
+#page {
+  display: flex;
+}

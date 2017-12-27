@@ -2,6 +2,7 @@ import {Routes} from '@angular/router';
 import {LoginComponent} from './login/login.component';
 import {MainComponent} from './main/main.component';
 import {GoogleMapComponent} from './map/google-map/google-map.component';
+import {MapComponent} from './map/map.component';
 
 export const ROUTES: Routes = [
   {
@@ -19,6 +20,6 @@ export const ROUTES: Routes = [
   },
   {
     path: 'map',
-    component: GoogleMapComponent
+    component: MapComponent
   }
 ];

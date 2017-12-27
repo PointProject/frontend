@@ -1,0 +1,44 @@
+<div class="form-panel">
+  <div class="input-row">
+    <label [for]="createObject?.title">{{createObject?.title}}</label>
+    <select [id]="createObject?.title"
+            class="input"
+            [formControl]="chooseFormControl">
+      <option *ngFor="let element of createObject.data" [ngValue]="element">
+        {{element.title}}
+      </option>
+    </select>
+    <button (click)="toggleEditPanel()">Add</button>
+  </div>
+  <div [formGroup]="formGroup" class="add-panel" *ngIf="isEdit">
+    <div *ngFor="let field of createObject?.fields" class="input-row">
+      <label [for]="field.id">{{field.name}}</label>
+      <ng-container [ngSwitch]="field.type">
+        <input *ngSwitchCase="fieldType.input"
+               [formControlName]="field.id"
+               [id]="field.id"
+               class="input"
+               name="countryId">
+        <select *ngSwitchCase="fieldType.select"
+                [formControlName]="field.id"
+                [id]="field.id"
+                class="input"
+                name="countryId">
+          <option *ngFor="let fieldElement of field.data" [ngValue]="fieldElement">
+            {{fieldElement.title}}
+          </option>
+        </select>
+      </ng-container>
+      <button (click)="clearField(field.id)">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </button>
+    </div>
+    <div class="add-footer">
+      <button class="close" (click)="toggleEditPanel()">Close</button>
+      <button class="clear" (click)="clear()">Clear</button>
+      <button class="create" (click)="create()">Create</button>
+    </div>
+  </div>
+</div>
+
+
