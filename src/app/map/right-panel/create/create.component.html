@@ -16,12 +16,12 @@
       <ng-container [ngSwitch]="field.type">
         <input *ngSwitchCase="fieldType.input"
                [formControlName]="field.id"
-               [id]="field.id"
+               [attr.id]="field.id"
                class="input"
                name="countryId">
         <select *ngSwitchCase="fieldType.select"
                 [formControlName]="field.id"
-                [id]="field.id"
+                [attr.id]="field.id"
                 class="input"
                 name="countryId">
           <option *ngFor="let fieldElement of field.data" [ngValue]="fieldElement">

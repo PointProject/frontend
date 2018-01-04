@@ -20,7 +20,6 @@ export class RightPanelService {
     return this.apiService.get('/secure/city/list');
   }
 
-
   public getZones(): Observable<any> {
     return this.apiService.get('/secure/zone/list');
   }

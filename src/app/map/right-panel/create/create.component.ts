@@ -1,8 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {CreateObject, Field, FieldType} from '../right-panel.interfaces';
 import {ApiService} from '../../../shared/api/api.service';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {finalize} from 'rxjs/operators';
+import {CreateObject, Field, FieldType} from '../../map.interfaces';
 
 @Component({
   selector: 'app-create',
@@ -51,8 +50,8 @@ export class CreateComponent implements OnInit, OnChanges {
     this.apiService.get(this.createObject.initLink)
       .subscribe((response: any) => {
         this.createObject.data = response;
-        if (this.createObject.changeFn) {
-          this.createObject.changeFn(response);
+        if (this.createObject.dataUpdated) {
+          this.createObject.dataUpdated(response);
         }
       });
   }
@@ -76,5 +75,8 @@ export class CreateComponent implements OnInit, OnChanges {
 
   public toggleEditPanel(): void {
     this.isEdit = !this.isEdit;
+    if (this.createObject.onEditToggle) {
+      this.createObject.onEditToggle(this.isEdit);
+    }
   }
 }
