@@ -4,6 +4,8 @@
     <select [id]="createObject?.title"
             class="input"
             [formControl]="chooseFormControl">
+      <option>
+      </option>
       <option *ngFor="let element of createObject.data" [ngValue]="element">
         {{element.title}}
       </option>

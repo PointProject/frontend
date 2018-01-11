@@ -5,6 +5,7 @@ export interface CreateObject {
   initLink: string;
   createLink: string;
   // Hooks
+  onAdd?: Function;
   dataUpdated?: Function;
   onEditToggle?: Function;
 }
@@ -31,7 +32,6 @@ export interface Point {
   id: number;
   latitude: number;
   longitude: number;
-  zone: Zone;
 }
 
 export interface MoneyPoint {
@@ -51,6 +51,7 @@ export interface Zone {
   strokeColor: string;
   title: string;
   city: City;
+  points: Point[];
 }
 
 export interface Race {

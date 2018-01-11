@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {element} from 'protractor';
-import {Zone} from './zone';
+import {MapZone} from './zone';
 import {MapService} from '../map.service';
+import {Zone} from '../map.interfaces';
 
 declare let google: any;
 
@@ -18,13 +19,15 @@ export class GoogleMapComponent implements OnInit, OnChanges {
   public startLng: number;
   @Input()
   public zoom: number;
-  @Input()
-  public points: any; // FIXME Add interface
-  @Input()
-  public zones: any[] = []; // FIXME Add interface
 
   @Output()
   public onMapClick: EventEmitter<any> = new EventEmitter<any>();
+
+  public points: any;
+
+  public zones: Zone[] = [];
+
+  public currentMapZone: MapZone;
 
   public name: string;
 
@@ -44,6 +47,22 @@ export class GoogleMapComponent implements OnInit, OnChanges {
 
     this.map.addListener('click', (event: any) => {
       this.editPoint(event.latLng);
+
+      if (this.currentMapZone) {
+        this.currentMapZone.addPoint(event.latLng);
+      }
+    });
+
+    this.mapService.zonesObservable.subscribe((zones: Zone[]) => {
+      this.zones = zones;
+      this.zones.forEach((zone: Zone) => {
+        new MapZone(this.map, zone);
+      });
+      console.log(this.zones);
+    });
+
+    this.mapService.newZonesSubject.subscribe(() => {
+      this.currentMapZone = new MapZone(this.map);
     });
   }
 

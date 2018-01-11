@@ -1,16 +1,23 @@
 import {ICoord} from './google-map.interfaces';
+import {Point, Zone} from '../map.interfaces';
 
 declare let google: any;
 
-export class Zone {
+export class MapZone {
 
   private points: ICoord[] = [];
-  private zone: any;
   private polygon: any;
 
-  constructor(public map: any, public name) {
+  constructor(public map: any, public zone?: Zone) {
     this.initZone();
     this.polygon.setMap(this.map);
+
+    if (this.zone) {
+      this.points = this.zone.points.map((point: Point) => {
+        return {lat: point.latitude, lng: point.longitude};
+      });
+      this.polygon.setPath(this.points);
+    }
   }
 
   private initZone() {

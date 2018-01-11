@@ -61,6 +61,7 @@ export class RightPanelComponent implements OnInit {
       initLink: '/secure/zone/list',
       createLink: '/secure/zone/update',
       dataUpdated: this.zonesUpdated.bind(this),
+      onAdd: this.addZone.bind(this),
       fields: [
         {
           type: FieldType.input,
@@ -185,6 +186,7 @@ export class RightPanelComponent implements OnInit {
   public zonesUpdated(data: Zone[]): void {
     this.zones.length = 0;
     this.zones.push(...data);
+    this.mapService.zonesSubject.next(data);
   }
 
   public racesUpdated(data: Race[]): void {
@@ -194,5 +196,9 @@ export class RightPanelComponent implements OnInit {
 
   public setPointEditStatus(isEdit: boolean) {
     this.mapService.isEditPoint = isEdit;
+  }
+
+  public addZone() {
+    this.mapService.newZonesSubject.next();
   }
 }

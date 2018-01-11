@@ -75,6 +75,10 @@ export class CreateComponent implements OnInit, OnChanges {
 
   public toggleEditPanel(): void {
     this.isEdit = !this.isEdit;
+    if (this.createObject.onAdd) {
+      this.createObject.onAdd();
+    }
+
     if (this.createObject.onEditToggle) {
       this.createObject.onEditToggle(this.isEdit);
     }
