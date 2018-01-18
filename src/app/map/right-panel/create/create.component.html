@@ -1,19 +1,20 @@
 <div class="form-panel">
   <div class="input-row">
-    <label [for]="createObject?.title">{{createObject?.title}}</label>
-    <select [id]="createObject?.title"
+    <label [for]="editEntity?.title">{{editEntity?.title}}</label>
+    <select [id]="editEntity?.title"
             class="input"
             [formControl]="chooseFormControl">
       <option>
+        New
       </option>
-      <option *ngFor="let element of createObject.data" [ngValue]="element">
+      <option *ngFor="let element of editEntity.data" [ngValue]="element">
         {{element.title}}
       </option>
     </select>
     <button (click)="toggleEditPanel()">Add</button>
   </div>
   <div [formGroup]="formGroup" class="add-panel" *ngIf="isEdit">
-    <div *ngFor="let field of createObject?.fields" class="input-row">
+    <div *ngFor="let field of editEntity?.fields" class="input-row">
       <label [for]="field.id">{{field.name}}</label>
       <ng-container [ngSwitch]="field.type">
         <input *ngSwitchCase="fieldType.input"

@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {City, Country, CreateObject, FieldType, Race, Zone} from '../map.interfaces';
+import {City, Country, FieldType, Point, Zone} from '../map.interfaces';
 import {MapService} from '../map.service';
+import {EditEntity} from './create/edit-entity';
 
 @Component({
   selector: 'app-right-panel',
@@ -8,89 +9,15 @@ import {MapService} from '../map.service';
   styleUrls: ['./right-panel.component.css']
 })
 export class RightPanelComponent implements OnInit {
-  private countries: Country[] = [];
-  private cities: City[] = [];
-  private zones: Zone[] = [];
-  private races: Race[] = [];
+  private zonePoints: Point[];
 
-  public createObjects: CreateObject[] = [
-    {
-      title: 'Country',
-      initLink: '/secure/country/list',
-      createLink: '/secure/country/update',
-      dataUpdated: this.countriesUpdated.bind(this),
-      fields: [
-        {
-          type: FieldType.input,
-          name: 'Id',
-          id: 'id'
-        },
-        {
-          type: FieldType.input,
-          name: 'Title',
-          id: 'title'
-        }
-      ]
-    },
-    {
-      title: 'City',
-      initLink: '/secure/city/list',
-      createLink: '/secure/city/update',
-      dataUpdated: this.citiesUpdated.bind(this),
-      fields: [
-        {
-          type: FieldType.input,
-          name: 'Id',
-          id: 'id'
-        },
-        {
-          type: FieldType.input,
-          name: 'Title',
-          id: 'title'
-        },
-        {
-          type: FieldType.select,
-          name: 'Country',
-          id: 'country',
-          data: this.countries
-        }
-      ]
-    },
-    {
-      title: 'Zone',
-      initLink: '/secure/zone/list',
-      createLink: '/secure/zone/update',
-      dataUpdated: this.zonesUpdated.bind(this),
-      onAdd: this.addZone.bind(this),
-      fields: [
-        {
-          type: FieldType.input,
-          name: 'Id',
-          id: 'id'
-        },
-        {
-          type: FieldType.input,
-          name: 'Title',
-          id: 'title'
-        },
-        {
-          type: FieldType.input,
-          name: 'Fill Color',
-          id: 'fillColor'
-        },
-        {
-          type: FieldType.input,
-          name: 'Stroke Color',
-          id: 'strokeColor'
-        },
-        {
-          type: FieldType.select,
-          name: 'City',
-          id: 'city',
-          data: this.cities
-        }
-      ]
-    },
+  public countryEntity: EditEntity;
+  public cityEntity: EditEntity;
+  public zoneEntity: EditEntity;
+  public raceEntity: EditEntity;
+  public PointEntity: EditEntity;
+
+  /*
     {
       title: 'Race',
       initLink: '/secure/race/list',
@@ -164,41 +91,85 @@ export class RightPanelComponent implements OnInit {
         }
       ]
     }
-  ];
+  ];*/
 
   constructor(private mapService: MapService) {
   }
 
   public ngOnInit(): void {
+    this.mapService.zonePointsObservable.subscribe((points: Point[]) => {
+      this.zonePoints = points;
+    });
+
+    this.initCountryEntity();
+    this.initCityEntity();
+    this.initZoneEntity();
+  }
+
+  public initCountryEntity() {
+    this.countryEntity = new EditEntity(
+      'Country',
+      '/secure/country/list',
+      '/secure/country/update'
+    );
+
+    this.countryEntity.addField(FieldType.input, 'Id', 'id');
+    this.countryEntity.addField(FieldType.input, 'Title', 'title');
+    this.countryEntity.onDataLoaded = (data: any[]) => {
+      this.cityEntity.setFieldData('country', data);
+    };
+  }
+
+  public initCityEntity() {
+    this.cityEntity = new EditEntity(
+      'City',
+      '/secure/city/list',
+      '/secure/city/update'
+    );
+
+    this.cityEntity.addField(FieldType.input, 'Id', 'id');
+    this.cityEntity.addField(FieldType.input, 'Title', 'title');
+    this.cityEntity.addField(FieldType.select, 'Country', 'country');
+    this.cityEntity.onDataLoaded = (data: any[]) => {
+      this.zoneEntity.setFieldData('city', data);
+    };
+  }
+
+  public initZoneEntity() {
+    this.zoneEntity = new EditEntity(
+      'Zone',
+      '/secure/zone/list',
+      '/secure/zone/update'
+    );
+
+    this.zoneEntity.addField(FieldType.input, 'Id', 'id');
+    this.zoneEntity.addField(FieldType.input, 'Title', 'title');
+    this.zoneEntity.addField(FieldType.input, 'Fill Color', 'fillColor');
+    this.zoneEntity.addField(FieldType.input, 'Stroke Color', 'strokeColor');
+    this.zoneEntity.addField(FieldType.select, 'City', 'city');
+
+    this.zoneEntity.onSelectItem = (zone: Zone) => {
+      this.mapService.zoneSelectSubject.next(zone);
+    };
+
+    this.zoneEntity.beforeSave = (dataObject: any) => {
+      dataObject.points = this.zonePoints;
+    };
+
+    this.zoneEntity.onDataLoaded = (zones: Zone[]) => {
+      this.mapService.zonesSubject.next(zones);
+    };
+  }
+
+  public initRaceEntity() {
 
   }
 
-  public countriesUpdated(data: Country[]): void {
-    this.countries.length = 0;
-    this.countries.push(...data);
-  }
+  public initPointEntity() {
 
-  public citiesUpdated(data: City[]): void {
-    this.cities.length = 0;
-    this.cities.push(...data);
-  }
-
-  public zonesUpdated(data: Zone[]): void {
-    this.zones.length = 0;
-    this.zones.push(...data);
-    this.mapService.zonesSubject.next(data);
-  }
-
-  public racesUpdated(data: Race[]): void {
-    this.races.length = 0;
-    this.races.push(...data);
   }
 
   public setPointEditStatus(isEdit: boolean) {
     this.mapService.isEditPoint = isEdit;
-  }
-
-  public addZone() {
-    this.mapService.newZonesSubject.next();
   }
 }

@@ -2,6 +2,8 @@ import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core'
 import {ApiService} from '../../../shared/api/api.service';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {CreateObject, Field, FieldType} from '../../map.interfaces';
+import {MapService} from '../../map.service';
+import {EditEntity} from './edit-entity';
 
 @Component({
   selector: 'app-create',
@@ -11,7 +13,7 @@ import {CreateObject, Field, FieldType} from '../../map.interfaces';
 export class CreateComponent implements OnInit, OnChanges {
 
   @Input()
-  public createObject: CreateObject;
+  public editEntity: EditEntity;
 
   public formGroup: FormGroup;
   public chooseFormControl: FormControl = new FormControl;
@@ -28,9 +30,11 @@ export class CreateComponent implements OnInit, OnChanges {
   public ngOnInit() {
     this.fetchData();
     const controlsConfig: any = {};
-    this.createObject.fields.forEach((field: Field) => {
+
+    this.editEntity.fields.forEach((field: Field) => {
       controlsConfig[field.id] = [];
     });
+
     this.formGroup = this.formBuilder.group(controlsConfig);
 
     this.formGroup.valueChanges
@@ -40,27 +44,30 @@ export class CreateComponent implements OnInit, OnChanges {
 
     this.chooseFormControl.valueChanges
       .subscribe((value: any) => {
+        this.editEntity.onSelectItem(value);
         Object.keys(this.formGroup.controls).forEach((key: string) => {
           this.formGroup.controls[key].setValue(value[key]);
         });
       });
   }
 
-  public fetchData(): void {
-    this.apiService.get(this.createObject.initLink)
-      .subscribe((response: any) => {
-        this.createObject.data = response;
-        if (this.createObject.dataUpdated) {
-          this.createObject.dataUpdated(response);
-        }
-      });
-  }
-
   public ngOnChanges(changes: SimpleChanges): void {
   }
 
+  public fetchData(): void {
+    this.apiService.get(this.editEntity.initLink)
+      .subscribe((response: any) => {
+        this.editEntity.data = response;
+        this.editEntity.onDataLoaded(response);
+      });
+  }
+
+
+  // ------------------------------------------Buttons------------------------------------------------------------------
   public create(): void {
-    this.apiService.post(this.createObject.createLink, this.editObject).subscribe(() => {
+    this.editEntity.beforeSave(this.editObject);
+
+    this.apiService.post(this.editEntity.createLink, this.editObject).subscribe(() => {
       this.fetchData();
     });
   }
@@ -75,12 +82,8 @@ export class CreateComponent implements OnInit, OnChanges {
 
   public toggleEditPanel(): void {
     this.isEdit = !this.isEdit;
-    if (this.createObject.onAdd) {
-      this.createObject.onAdd();
-    }
-
-    if (this.createObject.onEditToggle) {
-      this.createObject.onEditToggle(this.isEdit);
-    }
+    this.editEntity.onToggleEdit(this.isEdit);
   }
+
+  // -------------------------------------------------------------------------------------------------------------------
 }

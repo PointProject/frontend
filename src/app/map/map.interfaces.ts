@@ -1,13 +1,18 @@
 export interface CreateObject {
   title: string;
   fields: Field[];
-  data?: any[];
+  data: any[];
   initLink: string;
   createLink: string;
+
   // Hooks
-  onAdd?: Function;
-  dataUpdated?: Function;
-  onEditToggle?: Function;
+  beforeSave(data: any): void;
+
+  onDataLoaded(data: any): void;
+
+  onSelectItem(data: any): void;
+
+  onToggleEdit(isEdit: boolean): void;
 }
 
 export interface Field {
@@ -32,6 +37,7 @@ export interface Point {
   id: number;
   latitude: number;
   longitude: number;
+  numberInSequence: number;
 }
 
 export interface MoneyPoint {

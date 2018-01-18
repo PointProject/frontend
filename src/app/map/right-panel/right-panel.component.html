@@ -1,4 +1,5 @@
 <div id="edit-panel">
-  <app-create *ngFor="let object of createObjects"
-              [createObject]="object"></app-create>
+  <app-create [editEntity]="countryEntity"></app-create>
+  <app-create [editEntity]="cityEntity"></app-create>
+  <app-create [editEntity]="zoneEntity"></app-create>
 </div>
