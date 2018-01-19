@@ -1,3 +1,7 @@
+export enum ServerStatus {
+  UNAUTHORIZED = 500
+}
+
 export enum AuthenticationEvents {
   LOGIN = 'login',
   LOGOUT = 'logout'

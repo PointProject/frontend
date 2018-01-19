@@ -100,7 +100,6 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     }
 
     this.currentMapZone.setListener((a) => {
-      console.log('click', a);
     });
   }
 

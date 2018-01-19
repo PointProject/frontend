@@ -3,6 +3,7 @@ import {LoginComponent} from './login/login.component';
 import {MainComponent} from './main/main.component';
 import {GoogleMapComponent} from './map/google-map/google-map.component';
 import {MapComponent} from './map/map.component';
+import {AuthenticationGuard} from './shared/authentication/authentication.guard';
 
 export const ROUTES: Routes = [
   {
@@ -11,15 +12,22 @@ export const ROUTES: Routes = [
     redirectTo: '/main'
   },
   {
+    path: 'main',
+    pathMatch: 'full',
+    redirectTo: '/map'
+  },
+  {
     path: 'login',
     component: LoginComponent
   },
-  {
+ /* {
     path: 'main',
-    component: MainComponent
-  },
+    component: MainComponent,
+    canActivate: [AuthenticationGuard]
+  },*/
   {
     path: 'map',
-    component: MapComponent
+    component: MapComponent,
+    canActivate: [AuthenticationGuard]
   }
 ];

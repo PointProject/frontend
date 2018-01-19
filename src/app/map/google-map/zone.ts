@@ -48,12 +48,10 @@ export class MapZone {
     this.createZonePoints();
 
     google.maps.event.addListener(this.polygon.getPath(), 'insert_at', (index, obj) => {
-      console.log('1', index, obj);
       this.createZonePoints();
     });
 
     google.maps.event.addListener(this.polygon.getPath(), 'set_at', (index, obj) => {
-      console.log('2', index, obj);
       this.createZonePoints();
     });
   }
@@ -71,7 +69,6 @@ export class MapZone {
   }
 
   private createZonePoints(): void {
-    console.log(this.zone);
     this.mapService.zonePointsSubject.next(this.getPoints().getArray().map((point: any, index: number) => {
       const resultPoint: any = {
         latitude: point.lat(),

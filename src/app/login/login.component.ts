@@ -16,14 +16,11 @@ export class LoginComponent implements OnInit {
               private apiService: ApiService) {
   }
 
-  ngOnInit() {
+  public ngOnInit() {
+    this.authenticationService.logout();
   }
 
   public onLogIn(): void {
     this.authenticationService.login(this.login, this.password);
-  }
-
-  public onLogOut(): void {
-    this.authenticationService.logout();
   }
 }
