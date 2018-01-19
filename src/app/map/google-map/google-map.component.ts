@@ -89,7 +89,6 @@ export class GoogleMapComponent implements OnInit, OnChanges {
 
     if (!foundZone) {
       this.createNewZone();
-      this.prevPoints = [];
     } else {
       this.currentMapZone = foundZone.mapZone;
       this.currentMapZone.setEditable(true);
@@ -109,10 +108,13 @@ export class GoogleMapComponent implements OnInit, OnChanges {
 
     if (this.currentMapZone) {
       this.currentMapZone.setEditable(false);
+      this.currentMapZone.clearListeners();
+      this.currentMapZone.setPoints(this.prevPoints);
     }
 
     this.currentMapZone = new MapZone(this.mapService, this.map);
     this.currentMapZone.setEditable(true);
+    this.prevPoints = [];
   }
 
   private removeAllZones(): void {

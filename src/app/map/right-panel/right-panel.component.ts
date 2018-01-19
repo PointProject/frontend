@@ -159,6 +159,10 @@ export class RightPanelComponent implements OnInit {
     this.zoneEntity.onDataLoaded = (zones: Zone[]) => {
       this.mapService.zonesSubject.next(zones);
     };
+
+    this.zoneEntity.createNewInstance = () => {
+      this.mapService.newZoneSubject.next();
+    };
   }
 
   public initRaceEntity() {

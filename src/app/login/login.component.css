@@ -1,0 +1,64 @@
+.login-page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-back {
+  z-index: -1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  background-image: url("../../assets/images/noutbuk-klaviatura-mysh-stol.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.login-panel {
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.login-row {
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.login-row input {
+  background: none;
+  border-left: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: 1px solid #e2e2e2;
+  outline: none;
+  padding: 5px;
+  width: 300px;
+  transition: all 0.5s;
+  font-size: 14px;
+  color: #f6f6f6;
+}
+
+.login-row input:focus {
+  border-bottom: 1px solid #e21113;
+  width: 320px;
+  margin: 5px;
+  font-size: 15px;
+}
+
+.login-row input::-webkit-input-placeholder {
+  color: #cccccc;
+}
+
+.login-row input:focus::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.1);
+}
+
+.login-row button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}

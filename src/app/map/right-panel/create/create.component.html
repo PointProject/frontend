@@ -4,14 +4,11 @@
     <select [id]="editEntity?.title"
             class="input"
             [formControl]="chooseFormControl">
-      <option>
-        New
-      </option>
       <option *ngFor="let element of editEntity.data" [ngValue]="element">
         {{element.title}}
       </option>
     </select>
-    <button (click)="toggleEditPanel()">Add</button>
+    <button (click)="createNewInstance()">New</button>
   </div>
   <div [formGroup]="formGroup" class="add-panel" *ngIf="isEdit">
     <div *ngFor="let field of editEntity?.fields" class="input-row">

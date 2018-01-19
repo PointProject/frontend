@@ -1,9 +1,17 @@
-<input [(ngModel)]="login" name="login">
-<input [(ngModel)]="password" name="password">
-<button type="submit" (click)="onLogIn()">
-  Sign in
-</button>
-
-<button (click)="onLogOut()">
-  Log out
-</button>
+<div class="login-page">
+  <div class="login-back"></div>
+  <div class="login-panel">
+    <div class="login-row"></div>
+    <div class="login-row">
+      <input placeholder="Login" [(ngModel)]="login" name="login">
+    </div>
+    <div class="login-row">
+      <input placeholder="Password" [(ngModel)]="password" name="password">
+    </div>
+    <div class="login-row" style="text-align: center">
+      <button type="submit" (click)="onLogIn()">
+        Sign in
+      </button>
+    </div>
+  </div>
+</div>

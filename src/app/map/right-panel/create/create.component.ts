@@ -44,6 +44,11 @@ export class CreateComponent implements OnInit, OnChanges {
 
     this.chooseFormControl.valueChanges
       .subscribe((value: any) => {
+
+        if (!value) {
+          return;
+        }
+
         this.editEntity.onSelectItem(value);
         Object.keys(this.formGroup.controls).forEach((key: string) => {
           this.formGroup.controls[key].setValue(value[key]);
@@ -83,6 +88,13 @@ export class CreateComponent implements OnInit, OnChanges {
   public toggleEditPanel(): void {
     this.isEdit = !this.isEdit;
     this.editEntity.onToggleEdit(this.isEdit);
+  }
+
+  public createNewInstance(): void {
+    this.isEdit = true;
+    this.clear();
+    this.editEntity.createNewInstance();
+    this.chooseFormControl.reset();
   }
 
   // -------------------------------------------------------------------------------------------------------------------

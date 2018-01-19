@@ -38,5 +38,8 @@ export class EditEntity implements CreateObject {
   public onToggleEdit(isEdit: boolean): void {
   }
 
+  public createNewInstance(): void {
+  }
+
   // -------------------------------------------------------------------------------------------------------------------
 }

@@ -8,6 +8,8 @@ export interface CreateObject {
   // Hooks
   beforeSave(data: any): void;
 
+  createNewInstance(): void;
+
   onDataLoaded(data: any): void;
 
   onSelectItem(data: any): void;
