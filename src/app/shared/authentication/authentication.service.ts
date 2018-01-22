@@ -53,7 +53,15 @@ export class AuthenticationService {
   }
 
   public get isAuthenticated(): boolean {
-    return this._isAuthenticated || !!localStorage.getItem('token');
+    if (this._isAuthenticated || !!localStorage.getItem('token')) {
+      return true;
+    }
+
+    if (this.router.url !== '/login') {
+      this.router.navigate(['/login']);
+    }
+
+    return false;
   }
 
   public set isAuthenticated(value: boolean) {

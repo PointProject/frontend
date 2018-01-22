@@ -1,11 +1,8 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
-import {element} from 'protractor';
 import {MapZone} from './zone';
 import {MapService} from '../map.service';
 import {Zone} from '../map.interfaces';
 import {ICoord} from './google-map.interfaces';
-
-declare let google: any;
 
 @Component({
   selector: 'app-google-map',

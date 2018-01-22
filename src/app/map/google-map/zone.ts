@@ -2,8 +2,6 @@ import {ICoord} from './google-map.interfaces';
 import {Point, Zone} from '../map.interfaces';
 import {MapService} from '../map.service';
 
-declare let google: any;
-
 export class MapZone {
 
   private points: ICoord[] = [];
