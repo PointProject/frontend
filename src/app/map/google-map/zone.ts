@@ -20,6 +20,10 @@ export class MapZone {
           return {lat: point.latitude, lng: point.longitude};
         });
       this.setPoints(this.points);
+      this.setOptions({
+        strokeColor: this.zone.strokeColor,
+        fillColor: this.zone.fillColor
+      });
     }
   }
 
@@ -42,6 +46,10 @@ export class MapZone {
   public setPoints(points: ICoord[]) {
     this.polygon.setPath(points);
     this.updatePoints();
+  }
+
+  public setOptions(options: any) {
+    this.polygon.setOptions(options);
   }
 
   public updatePoints(): void {

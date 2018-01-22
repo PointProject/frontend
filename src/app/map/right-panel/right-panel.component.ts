@@ -163,6 +163,14 @@ export class RightPanelComponent implements OnInit {
     this.zoneEntity.createNewInstance = () => {
       this.mapService.newZoneSubject.next();
     };
+
+    this.zoneEntity.onClear = () => {
+      this.mapService.clearZoneSubject.next();
+    };
+
+    this.zoneEntity.onToggleEdit = (isEdit: boolean) => {
+      this.mapService.isEditZone = isEdit;
+    };
   }
 
   public initRaceEntity() {

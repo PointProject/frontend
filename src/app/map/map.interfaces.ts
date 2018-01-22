@@ -10,6 +10,8 @@ export interface CreateObject {
 
   createNewInstance(): void;
 
+  onClear(): void;
+
   onDataLoaded(data: any): void;
 
   onSelectItem(data: any): void;

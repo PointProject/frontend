@@ -40,7 +40,7 @@ export class AuthenticationService {
         this.userService.setUser(user);
         this.authenticationObject.next(AuthenticationEvents.LOGIN);
         this.isAuthenticated = true;
-        this.router.navigate(['/main']);
+        this.router.navigate(['/map']);
       }, (error) => {
         this.isAuthenticated = false;
       });

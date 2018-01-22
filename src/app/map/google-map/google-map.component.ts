@@ -45,7 +45,7 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     this.map.addListener('click', (event: any) => {
       this.editPoint(event.latLng);
 
-      if (this.currentMapZone) {
+      if (this.currentMapZone && this.mapService.isEditZone) {
         this.currentMapZone.addPoint(event.latLng);
       }
     });
@@ -59,6 +59,10 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     });
 
     this.mapService.newZoneSubject.subscribe(() => {
+      this.createNewZone();
+    });
+
+    this.mapService.clearZoneSubject.subscribe(() => {
       this.createNewZone();
     });
   }

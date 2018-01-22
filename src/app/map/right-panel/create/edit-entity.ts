@@ -41,5 +41,8 @@ export class EditEntity implements CreateObject {
   public createNewInstance(): void {
   }
 
+  public onClear(): void {
+  }
+
   // -------------------------------------------------------------------------------------------------------------------
 }

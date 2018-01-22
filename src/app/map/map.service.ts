@@ -8,10 +8,12 @@ import {Point, Zone} from './map.interfaces';
 @Injectable()
 export class MapService {
 
-  public isEditPoint = false;
+  // ------------------------------------------Zone---------------------------------------------------------------------
+
   public isEditZone = false;
 
   public newZoneSubject: Subject<void> = new Subject();
+  public clearZoneSubject: Subject<void> = new Subject();
 
   public zonesSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   public zonesObservable: Observable<any> = this.zonesSubject
@@ -40,6 +42,10 @@ export class MapService {
     .pipe(
       filter((points) => points !== null)
     );
+
+  // --------------------------------------------Point------------------------------------------------------------------
+
+  public isEditPoint = false;
 
   public pointsSubject: BehaviorSubject<any> = new BehaviorSubject(null);
   public pointsObservable: Observable<any> = this.pointsSubject

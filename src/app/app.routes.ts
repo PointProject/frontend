@@ -9,11 +9,6 @@ export const ROUTES: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: '/main'
-  },
-  {
-    path: 'main',
-    pathMatch: 'full',
     redirectTo: '/map'
   },
   {

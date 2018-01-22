@@ -4,6 +4,7 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {CreateObject, Field, FieldType} from '../../map.interfaces';
 import {MapService} from '../../map.service';
 import {EditEntity} from './edit-entity';
+import {Utils} from '../../../shared/utils';
 
 @Component({
   selector: 'app-create',
@@ -50,6 +51,7 @@ export class CreateComponent implements OnInit, OnChanges {
         }
 
         this.editEntity.onSelectItem(value);
+        this.toggleEditPanel(true);
         Object.keys(this.formGroup.controls).forEach((key: string) => {
           this.formGroup.controls[key].setValue(value[key]);
         });
@@ -79,15 +81,23 @@ export class CreateComponent implements OnInit, OnChanges {
 
   public clear(): void {
     this.formGroup.reset();
+    this.editEntity.onClear();
   }
 
   public clearField(id: string) {
     this.formGroup.controls[id].reset();
   }
 
-  public toggleEditPanel(): void {
-    this.isEdit = !this.isEdit;
+  public toggleEditPanel(isEdit?: boolean): void {
+    this.isEdit = Utils.isPresent(isEdit) ? isEdit : !this.isEdit;
     this.editEntity.onToggleEdit(this.isEdit);
+  }
+
+  public onClose(): void {
+    this.isEdit = false;
+    this.clear();
+    this.editEntity.onToggleEdit(this.isEdit);
+    this.chooseFormControl.reset();
   }
 
   public createNewInstance(): void {
@@ -95,6 +105,7 @@ export class CreateComponent implements OnInit, OnChanges {
     this.clear();
     this.editEntity.createNewInstance();
     this.chooseFormControl.reset();
+    this.editEntity.onToggleEdit(this.isEdit);
   }
 
   // -------------------------------------------------------------------------------------------------------------------
