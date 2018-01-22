@@ -102,6 +102,8 @@ export class GoogleMapComponent implements OnInit, OnChanges {
 
     this.currentMapZone.setListener((a) => {
     });
+
+    this.focusOnZone(this.currentMapZone);
   }
 
   private createNewZone(): void {
@@ -127,6 +129,11 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     });
 
     this.mapZones = [];
+  }
+
+  private focusOnZone(zone: MapZone) {
+    this.map.setCenter(zone.getCenter());
+    this.map.setZoom(13);
   }
 
   // --------------------------------------------Point------------------------------------------------------------------

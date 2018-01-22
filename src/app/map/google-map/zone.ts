@@ -101,4 +101,26 @@ export class MapZone {
   public clearPointsList(): void {
     this.polygon.setMap(null);
   }
+
+  public getCenter(): ICoord {
+    const points: any = this.getPoints().getArray();
+
+    const latArray: number[] = [];
+    const lngArray: number[] = [];
+
+    points.forEach((point: any) => {
+      latArray.push(point.lat());
+      lngArray.push(point.lng());
+    });
+
+    const maxLat = Math.max(...latArray);
+    const minLat = Math.min(...latArray);
+    const maxLng = Math.max(...lngArray);
+    const minLng = Math.min(...lngArray);
+
+    return {
+      lat: minLat + ((maxLat - minLat) / 2),
+      lng: minLng + ((maxLng - minLng) / 2)
+    };
+  }
 }
