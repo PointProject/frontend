@@ -17,17 +17,20 @@
         <input *ngSwitchCase="fieldType.input"
                [formControlName]="field.id"
                [attr.id]="field.id"
-               class="input"
-               name="countryId">
+               class="input">
         <select *ngSwitchCase="fieldType.select"
                 [formControlName]="field.id"
                 [attr.id]="field.id"
-                class="input"
-                name="countryId">
+                class="input">
           <option *ngFor="let fieldElement of field.data" [ngValue]="fieldElement">
             {{fieldElement.title}}
           </option>
         </select>
+        <input *ngSwitchCase="fieldType.color"
+               [formControlName]="field.id"
+               [attr.id]="field.id"
+               class="input"
+               type="color">
       </ng-container>
       <button (click)="clearField(field.id)">
         <i class="fa fa-times" aria-hidden="true"></i>

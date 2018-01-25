@@ -8,8 +8,9 @@ import {ServerStatus} from '../../app.constants';
 @Injectable()
 export class ApiService {
 
-  // private apiHost = 'http://18.220.89.28:8080';
-  private apiHost = 'http://127.0.0.1:8080';
+  private apiHost = 'http://18.220.89.28:8080';
+
+  // private apiHost = 'http://127.0.0.1:8080';
 
   constructor(private httpClient: HttpClient,
               private router: Router) {

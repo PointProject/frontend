@@ -17,6 +17,8 @@ export interface CreateObject {
   onSelectItem(data: any): void;
 
   onToggleEdit(isEdit: boolean): void;
+
+  valueChanges(data: any): void;
 }
 
 export interface Field {
@@ -75,6 +77,6 @@ export interface GameUser {
 }
 
 export enum FieldType {
-  input, select
+  input, select, color
 }
 

@@ -62,6 +62,12 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     this.mapService.clearZoneSubject.subscribe(() => {
       this.createNewZone();
     });
+
+    this.mapService.zoneOptionsObservable.subscribe((options) => {
+      if (this.currentMapZone) {
+        this.currentMapZone.setOptions(options);
+      }
+    });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {

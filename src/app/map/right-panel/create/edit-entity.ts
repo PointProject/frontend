@@ -44,5 +44,8 @@ export class EditEntity implements CreateObject {
   public onClear(): void {
   }
 
+  public valueChanges(data: any): void {
+  }
+
   // -------------------------------------------------------------------------------------------------------------------
 }

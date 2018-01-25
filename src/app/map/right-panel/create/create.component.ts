@@ -28,7 +28,7 @@ export class CreateComponent implements OnInit, OnChanges {
               private formBuilder: FormBuilder) {
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.fetchData();
     const controlsConfig: any = {};
 
@@ -41,6 +41,7 @@ export class CreateComponent implements OnInit, OnChanges {
     this.formGroup.valueChanges
       .subscribe((change) => {
         this.editObject = change;
+        this.editEntity.valueChanges(change);
       });
 
     this.chooseFormControl.valueChanges
@@ -80,6 +81,7 @@ export class CreateComponent implements OnInit, OnChanges {
   }
 
   public clear(): void {
+    this.editEntity.createNewInstance();
     this.formGroup.reset();
     this.editEntity.onClear();
   }
@@ -96,14 +98,13 @@ export class CreateComponent implements OnInit, OnChanges {
   public onClose(): void {
     this.isEdit = false;
     this.clear();
-    this.editEntity.onToggleEdit(this.isEdit);
     this.chooseFormControl.reset();
+    this.editEntity.onToggleEdit(this.isEdit);
   }
 
   public createNewInstance(): void {
     this.isEdit = true;
     this.clear();
-    this.editEntity.createNewInstance();
     this.chooseFormControl.reset();
     this.editEntity.onToggleEdit(this.isEdit);
   }
