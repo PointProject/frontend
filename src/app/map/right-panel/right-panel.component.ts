@@ -15,83 +15,7 @@ export class RightPanelComponent implements OnInit {
   public cityEntity: EditEntity;
   public zoneEntity: EditEntity;
   public raceEntity: EditEntity;
-  public PointEntity: EditEntity;
-
-  /*
-    {
-      title: 'Race',
-      initLink: '/secure/race/list',
-      createLink: '/secure/race/update',
-      dataUpdated: this.racesUpdated.bind(this),
-      fields: [
-        {
-          type: FieldType.input,
-          name: 'Id',
-          id: 'id'
-        },
-        {
-          type: FieldType.input,
-          name: 'Duration',
-          id: 'duration'
-        },
-        {
-          type: FieldType.input,
-          name: 'Start time',
-          id: 'startTime'
-        }
-      ]
-    },
-    {
-      title: 'Point',
-      initLink: '/secure/moneypoint/list',
-      createLink: '',
-      onEditToggle: this.setPointEditStatus.bind(this),
-      fields: [
-        {
-          type: FieldType.input,
-          name: 'Id',
-          id: 'id'
-        },
-        {
-          type: FieldType.input,
-          name: 'Is activated',
-          id: 'isActivated'
-        },
-        {
-          type: FieldType.input,
-          name: 'Latitude',
-          id: 'latitude'
-        },
-        {
-          type: FieldType.input,
-          name: 'Longitude',
-          id: 'longitude'
-        },
-        {
-          type: FieldType.input,
-          name: 'Value',
-          id: 'value'
-        },
-        {
-          type: FieldType.input,
-          name: 'Game User',
-          id: 'gameUser'
-        },
-        {
-          type: FieldType.select,
-          name: 'Race',
-          id: 'race',
-          data: this.races
-        },
-        {
-          type: FieldType.select,
-          name: 'Zone',
-          id: 'zone',
-          data: this.zones
-        }
-      ]
-    }
-  ];*/
+  public pointEntity: EditEntity;
 
   constructor(private mapService: MapService) {
   }
@@ -104,6 +28,8 @@ export class RightPanelComponent implements OnInit {
     this.initCountryEntity();
     this.initCityEntity();
     this.initZoneEntity();
+    this.initRaceEntity();
+    this.initPointEntity();
   }
 
   public initCountryEntity() {
@@ -144,8 +70,8 @@ export class RightPanelComponent implements OnInit {
 
     this.zoneEntity.addField(FieldType.input, 'Id', 'id');
     this.zoneEntity.addField(FieldType.input, 'Title', 'title');
-    this.zoneEntity.addField(FieldType.input, 'Fill Color', 'fillColor');
-    this.zoneEntity.addField(FieldType.input, 'Stroke Color', 'strokeColor');
+    this.zoneEntity.addField(FieldType.color, 'Fill Color', 'fillColor');
+    this.zoneEntity.addField(FieldType.color, 'Stroke Color', 'strokeColor');
     this.zoneEntity.addField(FieldType.select, 'City', 'city');
 
     this.zoneEntity.onSelectItem = (zone: Zone) => {
@@ -171,14 +97,42 @@ export class RightPanelComponent implements OnInit {
     this.zoneEntity.onToggleEdit = (isEdit: boolean) => {
       this.mapService.isEditZone = isEdit;
     };
+
+    this.zoneEntity.valueChanges = (data: any) => {
+      this.mapService.zoneOptionsSubject.next({
+        fillColor: data.fillColor,
+        strokeColor: data.strokeColor
+      });
+    };
   }
 
   public initRaceEntity() {
+    this.raceEntity = new EditEntity(
+      'Race',
+      '/secure/race/list',
+      '/secure/race/update'
+    );
 
+    this.raceEntity.addField(FieldType.input, 'Id', 'id');
+    this.raceEntity.addField(FieldType.input, 'Duration', 'duration');
+    this.raceEntity.addField(FieldType.input, 'Start time', 'startTime');
   }
 
   public initPointEntity() {
+    this.pointEntity = new EditEntity(
+      'Point',
+      '/secure/moneypoint/list',
+      '/secure/moneypoint/update'
+    );
 
+    this.pointEntity.addField(FieldType.input, 'Id', 'id');
+    this.pointEntity.addField(FieldType.input, 'Is activated', 'isActivated');
+    this.pointEntity.addField(FieldType.input, 'Latitude', 'latitude');
+    this.pointEntity.addField(FieldType.input, 'Longitude', 'longitude');
+    this.pointEntity.addField(FieldType.input, 'Value', 'value');
+    this.pointEntity.addField(FieldType.input, 'Game Use', 'gameUser');
+    this.pointEntity.addField(FieldType.input, 'Race', 'race');
+    this.pointEntity.addField(FieldType.input, 'Zone', 'zone');
   }
 
   public setPointEditStatus(isEdit: boolean) {

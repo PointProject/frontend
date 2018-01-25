@@ -8,6 +8,9 @@ import {Point, Zone} from './map.interfaces';
 @Injectable()
 export class MapService {
 
+  constructor() {
+  }
+
   // ------------------------------------------Zone---------------------------------------------------------------------
 
   public isEditZone = false;
@@ -19,7 +22,7 @@ export class MapService {
   public zonesObservable: Observable<any> = this.zonesSubject
     .asObservable()
     .pipe(
-      filter((points) => points !== null)
+      filter((zones) => zones !== null)
     );
 
   public zonePointsSubject: BehaviorSubject<Point[]> = new BehaviorSubject(null);
@@ -33,15 +36,16 @@ export class MapService {
   public zoneSelectObservable: Observable<Zone> = this.zoneSelectSubject
     .asObservable()
     .pipe(
-      filter((points) => points !== null)
+      filter((zone) => zone !== null)
     );
 
-  public editPointSubject: BehaviorSubject<any> = new BehaviorSubject(null);
-  public editPointObservable: Observable<any> = this.editPointSubject
+  public zoneOptionsSubject: BehaviorSubject<any> = new BehaviorSubject(null);
+  public zoneOptionsObservable: Observable<any> = this.zoneOptionsSubject
     .asObservable()
     .pipe(
-      filter((points) => points !== null)
+      filter((options) => options !== null)
     );
+
 
   // --------------------------------------------Point------------------------------------------------------------------
 
@@ -54,6 +58,10 @@ export class MapService {
       filter((points) => points !== null)
     );
 
-  constructor() {
-  }
+  public editPointSubject: BehaviorSubject<any> = new BehaviorSubject(null);
+  public editPointObservable: Observable<any> = this.editPointSubject
+    .asObservable()
+    .pipe(
+      filter((points) => points !== null)
+    );
 }
