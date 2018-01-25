@@ -138,8 +138,11 @@ export class GoogleMapComponent implements OnInit, OnChanges {
   }
 
   private focusOnZone(zone: MapZone) {
-    this.map.setCenter(zone.getCenter());
-    this.map.setZoom(13);
+    const center: any = zone.getCenter();
+    if (center) {
+      this.map.setCenter(center);
+      this.map.setZoom(13);
+    }
   }
 
   // --------------------------------------------Point------------------------------------------------------------------

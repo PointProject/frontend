@@ -105,6 +105,10 @@ export class MapZone {
   public getCenter(): ICoord {
     const points: any = this.getPoints().getArray();
 
+    if (!points.length) {
+      return;
+    }
+
     const latArray: number[] = [];
     const lngArray: number[] = [];
 
