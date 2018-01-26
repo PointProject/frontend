@@ -125,7 +125,7 @@ export class RightPanelComponent implements OnInit {
       '/secure/moneypoint/update'
     );
 
-    this.pointEntity.addField(FieldType.input, 'Id', 'id');
+    this.pointEntity.addField(FieldType.input, 'Id1', 'id');
     this.pointEntity.addField(FieldType.input, 'Is activated', 'isActivated');
     this.pointEntity.addField(FieldType.input, 'Latitude', 'latitude');
     this.pointEntity.addField(FieldType.input, 'Longitude', 'longitude');
