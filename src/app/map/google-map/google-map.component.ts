@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {MapZone} from './zone';
 import {MapService} from '../map.service';
-import {Zone} from '../map.interfaces';
+import {PointEvents, Zone} from '../map.interfaces';
 import {ICoord} from './google-map.interfaces';
 
 @Component({
@@ -22,13 +22,14 @@ export class GoogleMapComponent implements OnInit, OnChanges {
   public onMapClick: EventEmitter<any> = new EventEmitter<any>();
 
   public points: any;
-  public mapZones: any[] = [];
+  public mapZones: { mapZone: MapZone, zone: Zone }[] = [];
   public currentMapZone: MapZone;
   public prevPoints: ICoord[];
   public name: string;
 
   private map: any;
   private point: any;
+  private currentPointZone;
 
   constructor(private mapService: MapService) {
   }
@@ -68,6 +69,29 @@ export class GoogleMapComponent implements OnInit, OnChanges {
         this.currentMapZone.setOptions(options);
       }
     });
+
+    this.mapService.$pointSelectZone.subscribe((zone: Zone) => {
+      console.log(zone);
+      this.currentPointZone = zone;
+      const mapZone: MapZone = this.getMapZoneById(zone.id).mapZone;
+      this.focusOnZone(mapZone);
+      mapZone.clickOnZone = (event) => {
+
+        new google.maps.Marker({
+          position: event.latLng,
+          map: this.map,
+          title: 'test'
+        });
+
+        this.mapService.pointsSubject.next({
+          event: PointEvents.EDIT_POINT,
+          data: {
+            lat: event.latLng.lat(),
+            lng: event.latLng.lng()
+          }
+        });
+      };
+    });
   }
 
   public ngOnChanges(changes: SimpleChanges): void {
@@ -86,11 +110,10 @@ export class GoogleMapComponent implements OnInit, OnChanges {
   }
 
   private selectZone(zone: Zone): void {
-    const foundZone: any = this.mapZones.find((mapZones: any) => mapZones.zone.id === zone.id);
+    const foundZone: any = this.getMapZoneById(zone.id);
 
     if (this.currentMapZone) {
       this.currentMapZone.setEditable(false);
-      this.currentMapZone.clearListeners();
       this.currentMapZone.setPoints(this.prevPoints);
     }
 
@@ -106,9 +129,6 @@ export class GoogleMapComponent implements OnInit, OnChanges {
       }));
     }
 
-    this.currentMapZone.setListener((a) => {
-    });
-
     this.focusOnZone(this.currentMapZone);
   }
 
@@ -116,7 +136,6 @@ export class GoogleMapComponent implements OnInit, OnChanges {
 
     if (this.currentMapZone) {
       this.currentMapZone.setEditable(false);
-      this.currentMapZone.clearListeners();
       this.currentMapZone.setPoints(this.prevPoints);
     }
 
@@ -143,6 +162,10 @@ export class GoogleMapComponent implements OnInit, OnChanges {
       this.map.setCenter(center);
       this.map.setZoom(13);
     }
+  }
+
+  private getMapZoneById(id: number) {
+    return this.mapZones.find((mapZones: any) => mapZones.zone.id === id);
   }
 
   // --------------------------------------------Point------------------------------------------------------------------

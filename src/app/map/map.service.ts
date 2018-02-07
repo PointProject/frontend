@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Observable} from 'rxjs/Observable';
-import {filter} from 'rxjs/operators';
+import {distinctUntilChanged, filter, map} from 'rxjs/operators';
 import {Subject} from 'rxjs/Subject';
-import {Point, Zone} from './map.interfaces';
+import {Point, PointEvents, Zone} from './map.interfaces';
 
 @Injectable()
 export class MapService {
@@ -51,17 +51,20 @@ export class MapService {
 
   public isEditPoint = false;
 
-  public pointsSubject: BehaviorSubject<any> = new BehaviorSubject(null);
-  public pointsObservable: Observable<any> = this.pointsSubject
+  public pointsSubject: Subject<{ event: PointEvents, data: any }> = new Subject();
+  public $pointSelectZone: Observable<Zone> = this.pointsSubject
     .asObservable()
     .pipe(
-      filter((points) => points !== null)
+      filter((pointEvent: { event: PointEvents, data: any }) =>
+        pointEvent.event === PointEvents.SELECT_ZONE && pointEvent.data !== null),
+      map((pointEvent: { event: PointEvents, data: any }) => pointEvent.data),
+      distinctUntilChanged()
     );
 
-  public editPointSubject: BehaviorSubject<any> = new BehaviorSubject(null);
-  public editPointObservable: Observable<any> = this.editPointSubject
+  public $pointEdit: Observable<{ lat: number, lng: number }> = this.pointsSubject
     .asObservable()
     .pipe(
-      filter((points) => points !== null)
+      filter((pointEvent: { event: PointEvents, data: any }) => pointEvent.event === PointEvents.EDIT_POINT),
+      map((pointEvent: { event: PointEvents, data: any }) => pointEvent.data)
     );
 }

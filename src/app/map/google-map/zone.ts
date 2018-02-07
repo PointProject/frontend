@@ -23,6 +23,8 @@ export class MapZone {
         fillColor: this.zone.fillColor
       });
     }
+
+    this.setListeners();
   }
 
   private initZone() {
@@ -90,8 +92,14 @@ export class MapZone {
     }));
   }
 
-  public setListener(callback: Function): void {
-    this.polygon.addListener('click', callback);
+  public setListeners(): void {
+    this.polygon.addListener('click', (event) => {
+      this.clickOnZone(event);
+    });
+  }
+
+  // Callback
+  public clickOnZone(event): void {
   }
 
   public clearListeners(): void {

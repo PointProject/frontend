@@ -11,17 +11,38 @@ export class EditEntity implements CreateObject {
 
   // ---------------------------------------Field-----------------------------------------------------------------------
 
-  public addField(type: FieldType, name: string, id: string, data?: any) {
+  public addField(type: FieldType,
+                  name: string,
+                  id: string,
+                  options: {
+                    data: any,
+                    required: boolean,
+                    isVisible: boolean
+                  } = {
+                    data: null,
+                    required: false,
+                    isVisible: true
+                  }) {
     this.fields.push({
       id,
       name,
       type,
-      data
+      data: options.data,
+      required: options.required,
+      isVisible: options.required
     });
   }
 
   public setFieldData(id: string, data: any[]) {
-    this.fields.find((field: Field) => field.id === id).data = data;
+    this.getFieldById(id).data = data;
+  }
+
+  public setFieldOptions() {
+
+  }
+
+  public getFieldById(id: string): Field {
+    return this.fields.find((field: Field) => field.id === id);
   }
 
   // ---------------------------------------Hooks-----------------------------------------------------------------------

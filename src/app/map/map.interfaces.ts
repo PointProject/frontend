@@ -21,11 +21,21 @@ export interface CreateObject {
   valueChanges(data: any): void;
 }
 
+export enum ZoneEvents {
+  NEW, SELECT, CLEAR, OPTIONS, INIT, POINTS
+}
+
+export enum PointEvents {
+  SELECT_ZONE, EDIT_POINT
+}
+
 export interface Field {
   type: FieldType;
   name: string;
   id: string;
   data?: any;
+  required: boolean;
+  isVisible: boolean;
 }
 
 export interface Country {

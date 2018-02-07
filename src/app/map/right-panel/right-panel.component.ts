@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {City, Country, FieldType, Point, Zone} from '../map.interfaces';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {City, Country, FieldType, MoneyPoint, Point, PointEvents, Zone} from '../map.interfaces';
 import {MapService} from '../map.service';
 import {EditEntity} from './create/edit-entity';
+import {CreateComponent} from './create/create.component';
 
 @Component({
   selector: 'app-right-panel',
@@ -9,6 +10,9 @@ import {EditEntity} from './create/edit-entity';
   styleUrls: ['./right-panel.component.css']
 })
 export class RightPanelComponent implements OnInit {
+
+  @ViewChild('pointComponent') private pointComponent: CreateComponent;
+
   private zonePoints: Point[];
 
   public countryEntity: EditEntity;
@@ -84,6 +88,7 @@ export class RightPanelComponent implements OnInit {
 
     this.zoneEntity.onDataLoaded = (zones: Zone[]) => {
       this.mapService.zonesSubject.next(zones);
+      this.pointEntity.setFieldData('zone', zones);
     };
 
     this.zoneEntity.createNewInstance = () => {
@@ -98,7 +103,7 @@ export class RightPanelComponent implements OnInit {
       this.mapService.isEditZone = isEdit;
     };
 
-    this.zoneEntity.valueChanges = (data: any) => {
+    this.zoneEntity.valueChanges = (data: Zone) => {
       this.mapService.zoneOptionsSubject.next({
         fillColor: data.fillColor,
         strokeColor: data.strokeColor
@@ -125,14 +130,27 @@ export class RightPanelComponent implements OnInit {
       '/secure/moneypoint/update'
     );
 
-    this.pointEntity.addField(FieldType.input, 'Id1', 'id');
+    this.pointEntity.addField(FieldType.input, 'Id', 'id');
     this.pointEntity.addField(FieldType.input, 'Is activated', 'isActivated');
     this.pointEntity.addField(FieldType.input, 'Latitude', 'latitude');
     this.pointEntity.addField(FieldType.input, 'Longitude', 'longitude');
     this.pointEntity.addField(FieldType.input, 'Value', 'value');
-    this.pointEntity.addField(FieldType.input, 'Game Use', 'gameUser');
+    this.pointEntity.addField(FieldType.input, 'Game User', 'gameUser');
     this.pointEntity.addField(FieldType.input, 'Race', 'race');
-    this.pointEntity.addField(FieldType.input, 'Zone', 'zone');
+    this.pointEntity.addField(FieldType.select, 'Zone', 'zone');
+
+    this.pointEntity.valueChanges = (data: MoneyPoint) => {
+      this.mapService.pointsSubject.next({
+        event: PointEvents.SELECT_ZONE,
+        data: data.zone
+      });
+    };
+
+    this.mapService.$pointEdit.subscribe((latLng) => {
+      this.pointComponent.formGroup.controls.latitude.setValue(latLng.lat);
+      this.pointComponent.formGroup.controls.longitude.setValue(latLng.lng);
+    });
+    console.log(this.pointComponent);
   }
 
   public setPointEditStatus(isEdit: boolean) {
