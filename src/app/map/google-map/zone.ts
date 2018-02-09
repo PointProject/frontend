@@ -1,13 +1,13 @@
 import {ICoord} from './google-map.interfaces';
 import {Point, Zone} from '../map.interfaces';
-import {MapService} from '../map.service';
+import {ZoneService} from '../zone.service';
 
 export class MapZone {
 
   private points: ICoord[] = [];
   private polygon: any;
 
-  constructor(public mapService: MapService, public map: any, public zone?: Zone) {
+  constructor(public zoneService: ZoneService, public map: any, public zone?: Zone) {
     this.initZone();
     this.polygon.setMap(this.map);
 
@@ -77,7 +77,7 @@ export class MapZone {
   }
 
   private createZonePoints(): void {
-    this.mapService.zonePointsSubject.next(this.getPoints().getArray().map((point: any, index: number) => {
+    this.zoneService.zonePointsSubject.next(this.getPoints().getArray().map((point: any, index: number) => {
       const resultPoint: any = {
         latitude: point.lat(),
         longitude: point.lng(),

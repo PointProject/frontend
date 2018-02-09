@@ -1,8 +1,10 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {MapZone} from './zone';
-import {MapService} from '../map.service';
 import {PointEvents, Zone} from '../map.interfaces';
 import {ICoord} from './google-map.interfaces';
+import {PointService} from '../point.service';
+import {ZoneService} from '../zone.service';
+import {Point} from './point';
 
 @Component({
   selector: 'app-google-map',
@@ -31,7 +33,7 @@ export class GoogleMapComponent implements OnInit, OnChanges {
   private point: any;
   private currentPointZone;
 
-  constructor(private mapService: MapService) {
+  constructor(private pointService: PointService, private zoneService: ZoneService) {
   }
 
   public ngOnInit() {
@@ -43,47 +45,55 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     this.map.addListener('click', (event: any) => {
       this.editPoint(event.latLng);
 
-      if (this.currentMapZone && this.mapService.isEditZone) {
+      if (this.currentMapZone && this.zoneService.isEditZone) {
         this.currentMapZone.addPoint(event.latLng);
       }
     });
 
-    this.mapService.zonesObservable.subscribe((zones: Zone[]) => {
+    this.zoneService.zonesObservable.subscribe((zones: Zone[]) => {
       this.initZones(zones);
     });
 
-    this.mapService.zoneSelectObservable.subscribe((zone: Zone) => {
+    this.zoneService.zoneSelectObservable.subscribe((zone: Zone) => {
       this.selectZone(zone);
     });
 
-    this.mapService.newZoneSubject.subscribe(() => {
+    this.zoneService.newZoneSubject.subscribe(() => {
       this.createNewZone();
     });
 
-    this.mapService.clearZoneSubject.subscribe(() => {
+    this.zoneService.clearZoneSubject.subscribe(() => {
       this.createNewZone();
     });
 
-    this.mapService.zoneOptionsObservable.subscribe((options) => {
+    this.zoneService.zoneOptionsObservable.subscribe((options) => {
       if (this.currentMapZone) {
         this.currentMapZone.setOptions(options);
       }
     });
 
-    this.mapService.$pointSelectZone.subscribe((zone: Zone) => {
-      console.log(zone);
-      this.currentPointZone = zone;
+    this.pointService.pointSelectZone$.subscribe((zone: Zone) => {
+      if (this.pointService.currentPoint) {
+        this.pointService.currentPoint.hidePoint();
+        this.pointService.currentPoint = null;
+      }
+
       const mapZone: MapZone = this.getMapZoneById(zone.id).mapZone;
       this.focusOnZone(mapZone);
+
+      if (this.currentPointZone) {
+        this.currentPointZone.mapZone.clickOnZone = () => {
+        };
+      }
+
       mapZone.clickOnZone = (event) => {
+        if (!this.pointService.currentPoint) {
+          this.pointService.currentPoint = new Point(this.map, {lat: event.latLng.lat(), lng: event.latLng.lng()});
+        } else {
+          this.pointService.currentPoint.setPosition(event.latLng.lat(), event.latLng.lng());
+        }
 
-        new google.maps.Marker({
-          position: event.latLng,
-          map: this.map,
-          title: 'test'
-        });
-
-        this.mapService.pointsSubject.next({
+        this.pointService.pointsSubject.next({
           event: PointEvents.EDIT_POINT,
           data: {
             lat: event.latLng.lat(),
@@ -91,6 +101,7 @@ export class GoogleMapComponent implements OnInit, OnChanges {
           }
         });
       };
+      this.currentPointZone = {zone, mapZone};
     });
   }
 
@@ -103,7 +114,7 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     this.removeAllZones();
     zones.forEach((zone: Zone) => {
       this.mapZones.push({
-        mapZone: new MapZone(this.mapService, this.map, zone),
+        mapZone: new MapZone(this.zoneService, this.map, zone),
         zone
       });
     });
@@ -139,7 +150,7 @@ export class GoogleMapComponent implements OnInit, OnChanges {
       this.currentMapZone.setPoints(this.prevPoints);
     }
 
-    this.currentMapZone = new MapZone(this.mapService, this.map);
+    this.currentMapZone = new MapZone(this.zoneService, this.map);
     this.currentMapZone.setEditable(true);
     this.prevPoints = [];
   }
@@ -178,7 +189,7 @@ export class GoogleMapComponent implements OnInit, OnChanges {
   }
 
   private editPoint(latLng: any): void {
-    if (this.mapService.isEditPoint) {
+    if (this.pointService.isEditPoint) {
       if (this.point) {
         this.point.setPosition(latLng);
       } else {

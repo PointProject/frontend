@@ -7,6 +7,8 @@ import {RightPanelComponent} from './right-panel/right-panel.component';
 import {RightPanelService} from './right-panel/right-panel.service';
 import {CreateComponent} from './right-panel/create/create.component';
 import {MapService} from './map.service';
+import {PointService} from './point.service';
+import {ZoneService} from './zone.service';
 
 @NgModule({
   imports: [
@@ -22,6 +24,8 @@ import {MapService} from './map.service';
   ],
   providers: [
     RightPanelService,
+    PointService,
+    ZoneService,
     MapService
   ]
 })

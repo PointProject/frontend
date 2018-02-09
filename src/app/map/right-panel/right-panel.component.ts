@@ -3,6 +3,8 @@ import {City, Country, FieldType, MoneyPoint, Point, PointEvents, Zone} from '..
 import {MapService} from '../map.service';
 import {EditEntity} from './create/edit-entity';
 import {CreateComponent} from './create/create.component';
+import {ZoneService} from '../zone.service';
+import {PointService} from '../point.service';
 
 @Component({
   selector: 'app-right-panel',
@@ -21,11 +23,11 @@ export class RightPanelComponent implements OnInit {
   public raceEntity: EditEntity;
   public pointEntity: EditEntity;
 
-  constructor(private mapService: MapService) {
+  constructor(private zoneService: ZoneService, private pointService: PointService) {
   }
 
   public ngOnInit(): void {
-    this.mapService.zonePointsObservable.subscribe((points: Point[]) => {
+    this.zoneService.zonePointsObservable.subscribe((points: Point[]) => {
       this.zonePoints = points;
     });
 
@@ -79,7 +81,7 @@ export class RightPanelComponent implements OnInit {
     this.zoneEntity.addField(FieldType.select, 'City', 'city');
 
     this.zoneEntity.onSelectItem = (zone: Zone) => {
-      this.mapService.zoneSelectSubject.next(zone);
+      this.zoneService.zoneSelectSubject.next(zone);
     };
 
     this.zoneEntity.beforeSave = (dataObject: any) => {
@@ -87,24 +89,24 @@ export class RightPanelComponent implements OnInit {
     };
 
     this.zoneEntity.onDataLoaded = (zones: Zone[]) => {
-      this.mapService.zonesSubject.next(zones);
+      this.zoneService.zonesSubject.next(zones);
       this.pointEntity.setFieldData('zone', zones);
     };
 
     this.zoneEntity.createNewInstance = () => {
-      this.mapService.newZoneSubject.next();
+      this.zoneService.newZoneSubject.next();
     };
 
     this.zoneEntity.onClear = () => {
-      this.mapService.clearZoneSubject.next();
+      this.zoneService.clearZoneSubject.next();
     };
 
     this.zoneEntity.onToggleEdit = (isEdit: boolean) => {
-      this.mapService.isEditZone = isEdit;
+      this.zoneService.isEditZone = isEdit;
     };
 
     this.zoneEntity.valueChanges = (data: Zone) => {
-      this.mapService.zoneOptionsSubject.next({
+      this.zoneService.zoneOptionsSubject.next({
         fillColor: data.fillColor,
         strokeColor: data.strokeColor
       });
@@ -140,20 +142,19 @@ export class RightPanelComponent implements OnInit {
     this.pointEntity.addField(FieldType.select, 'Zone', 'zone');
 
     this.pointEntity.valueChanges = (data: MoneyPoint) => {
-      this.mapService.pointsSubject.next({
+      this.pointService.pointsSubject.next({
         event: PointEvents.SELECT_ZONE,
         data: data.zone
       });
     };
 
-    this.mapService.$pointEdit.subscribe((latLng) => {
+    this.pointService.pointEdit$.subscribe((latLng) => {
       this.pointComponent.formGroup.controls.latitude.setValue(latLng.lat);
       this.pointComponent.formGroup.controls.longitude.setValue(latLng.lng);
     });
-    console.log(this.pointComponent);
   }
 
   public setPointEditStatus(isEdit: boolean) {
-    this.mapService.isEditPoint = isEdit;
+    this.pointService.isEditPoint = isEdit;
   }
 }
