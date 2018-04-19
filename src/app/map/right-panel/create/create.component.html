@@ -17,7 +17,8 @@
         <input *ngSwitchCase="fieldType.input"
                [formControlName]="field.id"
                [attr.id]="field.id"
-               class="input">
+               class="input"
+               [attr.disabled]="field.disabled ? '' : null">
         <select *ngSwitchCase="fieldType.select"
                 [formControlName]="field.id"
                 [attr.id]="field.id"

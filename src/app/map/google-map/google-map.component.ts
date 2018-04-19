@@ -30,7 +30,7 @@ export class GoogleMapComponent implements OnInit, OnChanges {
   public name: string;
 
   private map: any;
-  private point: any;
+  private marker: any;
   private currentPointZone;
 
   constructor(private pointService: PointService, private zoneService: ZoneService) {
@@ -43,7 +43,7 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     });
 
     this.map.addListener('click', (event: any) => {
-      this.editPoint(event.latLng);
+      this.editMarker(event.latLng);
 
       if (this.currentMapZone && this.zoneService.isEditZone) {
         this.currentMapZone.addPoint(event.latLng);
@@ -179,21 +179,21 @@ export class GoogleMapComponent implements OnInit, OnChanges {
     return this.mapZones.find((mapZones: any) => mapZones.zone.id === id);
   }
 
-  // --------------------------------------------Point------------------------------------------------------------------
+  // --------------------------------------------Marker-----------------------------------------------------------------
 
-  private addPoint(latLng: any): any {
+  private addMarker(latLng: any): any {
     return new google.maps.Marker({
       position: latLng,
       map: this.map
     });
   }
 
-  private editPoint(latLng: any): void {
+  private editMarker(latLng: any): void {
     if (this.pointService.isEditPoint) {
-      if (this.point) {
-        this.point.setPosition(latLng);
+      if (this.marker) {
+        this.marker.setPosition(latLng);
       } else {
-        this.point = this.addPoint(latLng);
+        this.marker = this.addMarker(latLng);
       }
     }
   }

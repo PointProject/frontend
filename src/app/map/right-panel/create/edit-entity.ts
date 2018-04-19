@@ -17,19 +17,17 @@ export class EditEntity implements CreateObject {
                   options: {
                     data: any,
                     required: boolean,
-                    isVisible: boolean
-                  } = {
-                    data: null,
-                    required: false,
-                    isVisible: true
-                  }) {
+                    isVisible: boolean,
+                    disabled: boolean
+                  } = this.getPointProperties()) {
     this.fields.push({
       id,
       name,
       type,
       data: options.data,
       required: options.required,
-      isVisible: options.required
+      isVisible: options.isVisible,
+      disabled: options.disabled
     });
   }
 
@@ -43,6 +41,15 @@ export class EditEntity implements CreateObject {
 
   public getFieldById(id: string): Field {
     return this.fields.find((field: Field) => field.id === id);
+  }
+
+  public getPointProperties(data = null, required = false, isVisible = true, disabled = false) {
+    return {
+      data,
+      required,
+      isVisible,
+      disabled
+    };
   }
 
   // ---------------------------------------Hooks-----------------------------------------------------------------------

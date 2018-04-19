@@ -132,12 +132,32 @@ export class RightPanelComponent implements OnInit {
       '/secure/moneypoint/update'
     );
 
-    this.pointEntity.addField(FieldType.input, 'Id', 'id');
+    this.pointEntity.addField(
+      FieldType.input,
+      'Id',
+      'id',
+      this.pointEntity.getPointProperties(null, false, true, true)
+    );
     this.pointEntity.addField(FieldType.input, 'Is activated', 'isActivated');
-    this.pointEntity.addField(FieldType.input, 'Latitude', 'latitude');
-    this.pointEntity.addField(FieldType.input, 'Longitude', 'longitude');
+    this.pointEntity.addField(
+      FieldType.input,
+      'Latitude',
+      'latitude',
+      this.pointEntity.getPointProperties(null, false, true, true)
+    );
+    this.pointEntity.addField(
+      FieldType.input,
+      'Longitude',
+      'longitude',
+      this.pointEntity.getPointProperties(null, false, true, true)
+    );
     this.pointEntity.addField(FieldType.input, 'Value', 'value');
-    this.pointEntity.addField(FieldType.input, 'Game User', 'gameUser');
+    this.pointEntity.addField(
+      FieldType.input,
+      'Game User',
+      'gameUser',
+      this.pointEntity.getPointProperties(null, false, true, true)
+    );
     this.pointEntity.addField(FieldType.input, 'Race', 'race');
     this.pointEntity.addField(FieldType.select, 'Zone', 'zone');
 

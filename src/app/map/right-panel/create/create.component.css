@@ -13,6 +13,10 @@
   padding-right: 5px;
 }
 
+.input-row .input:disabled {
+  background-color: #eaeaea;
+}
+
 .input-row .input[type="color"] {
   padding: 4px;
 }

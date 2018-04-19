@@ -36,6 +36,7 @@ export interface Field {
   data?: any;
   required: boolean;
   isVisible: boolean;
+  disabled: boolean;
 }
 
 export interface Country {

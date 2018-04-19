@@ -1,8 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {ApiService} from '../../../shared/api/api.service';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {CreateObject, Field, FieldType} from '../../map.interfaces';
-import {MapService} from '../../map.service';
+import {Field, FieldType} from '../../map.interfaces';
 import {EditEntity} from './edit-entity';
 import {Utils} from '../../../shared/utils';
 
