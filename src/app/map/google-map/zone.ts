@@ -5,7 +5,7 @@ import {ZoneService} from '../zone.service';
 export class MapZone {
 
   private points: ICoord[] = [];
-  private polygon: any;
+  public polygon: any;
 
   constructor(public zoneService: ZoneService, public map: any, public zone?: Zone) {
     this.initZone();

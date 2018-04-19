@@ -4,7 +4,7 @@ import {PointEvents, Zone} from '../map.interfaces';
 import {ICoord} from './google-map.interfaces';
 import {PointService} from '../point.service';
 import {ZoneService} from '../zone.service';
-import {Point} from './point';
+import {Point} from './marker';
 
 @Component({
   selector: 'app-google-map',
@@ -196,6 +196,30 @@ export class GoogleMapComponent implements OnInit, OnChanges {
         this.marker = this.addMarker(latLng);
       }
     }
+  }
+
+  private createRandomMarker(zone): void {
+    console.log('START', zone);
+    let bounds = new google.maps.LatLngBounds();
+    zone.getPoints().getArray();
+
+    for (let i = 0; i < zone.getPoints().getLength(); i++) {
+      bounds.extend(zone.getPoints().getAt(i));
+    }
+
+    let sw = bounds.getSouthWest();
+    let ne = bounds.getNorthEast();
+
+    for (let i = 0; i < 100; i++) {
+      let ptLat = Math.random() * (ne.lat() - sw.lat()) + sw.lat();
+      let ptLng = Math.random() * (ne.lng() - sw.lng()) + sw.lng();
+      let point = new google.maps.LatLng(ptLat, ptLng);
+      if (google.maps.geometry.poly.containsLocation(point, zone.polygon)) {
+        let marker = new google.maps.Marker({position: point, map: this.map});
+        console.log('new marker', marker);
+      }
+    }
+
   }
 
   // -------------------------------------------------------------------------------------------------------------------
