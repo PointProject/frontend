@@ -3,7 +3,7 @@ import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import {PointEvents, Zone} from './map.interfaces';
 import {Injectable} from '@angular/core';
-import {Point} from './google-map/point';
+import {Point} from './google-map/marker';
 
 @Injectable()
 export class PointService {
