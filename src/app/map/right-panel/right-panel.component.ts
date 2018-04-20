@@ -121,8 +121,13 @@ export class RightPanelComponent implements OnInit {
     );
 
     this.raceEntity.addField(FieldType.input, 'Id', 'id');
+    this.raceEntity.addField(FieldType.input, 'Title', 'title');
     this.raceEntity.addField(FieldType.input, 'Duration', 'duration');
     this.raceEntity.addField(FieldType.input, 'Start time', 'startTime');
+
+    this.raceEntity.onDataLoaded = (data: any[]) => {
+      this.pointEntity.setFieldData('race', data);
+    };
   }
 
   public initPointEntity() {
@@ -158,7 +163,8 @@ export class RightPanelComponent implements OnInit {
       'gameUser',
       this.pointEntity.getPointProperties(null, false, true, true)
     );
-    this.pointEntity.addField(FieldType.input, 'Race', 'race');
+
+    this.pointEntity.addField(FieldType.select, 'Race', 'race');
     this.pointEntity.addField(FieldType.select, 'Zone', 'zone');
 
     this.pointEntity.valueChanges = (data: MoneyPoint) => {
